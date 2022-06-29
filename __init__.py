@@ -20,6 +20,15 @@ inQuestion = True
 downX = -1.
 SWIPE_NEEDED_PIXELS = 150
 
+#DEFINING REMOVE PREFIX NOT FOUND ON PYTHON 3.8.8
+
+def removeprefix(text, prefix):
+    if text.startswith(prefix):
+        return text[len(prefix):]
+    return text  # or whatever
+
+
+
 # Responding to clicks
 def on_js_message(handled, msg, context):
     global downX
@@ -36,12 +45,12 @@ def on_js_message(handled, msg, context):
         return handled
 
     if msg.startswith("anki_touch "):
-        msg = msg.removeprefix("anki_touch ")
+        msg = removeprefix(msg, "anki_touch ")
         if msg.startswith("down "):
-            msg = msg.removeprefix("down ")
+            msg = removeprefix(msg, "down ")
             downX = float(msg)
         elif msg.startswith("up "):
-            msg = msg.removeprefix("up ")
+            msg = removeprefix(msg, "up ")
             diffX = float(msg) - downX
             if diffX < -SWIPE_NEEDED_PIXELS:
                 if not inQuestion:
